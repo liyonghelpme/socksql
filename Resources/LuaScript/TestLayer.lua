@@ -22,7 +22,7 @@ function TestLayer:update(diff)
             rd = rd%16
             rd = rd+1
         end
-        rd = 13 
+        rd = 1 
         local v = math.random(1, self.maxValue)
         v = math.pow(2, v)
         self.map[rd] = v 
@@ -115,8 +115,12 @@ function TestLayer:touchEnded(x, y)
                                 mt[i+1] = j
                                 find = true
                                 break 
+                            --can't merge not empty then stop
+                            elseif st[j+1] ~= 0 then
+                                break
                             end
                         end
+
                         print("merge or move?", find)
                         --no merge then just move to first position
                         if not find then
@@ -160,6 +164,7 @@ function TestLayer:touchEnded(x, y)
                             --merge value ---> j 3 2 1 0  move position
                             print("merge block value", st[mt[i+1]+1])
                             self.map[nn] = st[mt[i+1]+1]
+                            self.maxValue = math.max(self.maxValue, getOrder(st[mt[i+1]+1])-1)
                         --no merge
                         elseif nn == num then
 
@@ -211,6 +216,126 @@ function TestLayer:touchEnded(x, y)
             --]]
         --left 
         else
+            --row not change
+            --col 0 1 2 3 direction judge 
+            --test appear in 4 * 4 = 16
+
+            for row=0, 3, 1 do
+
+                --0 1 2 3
+                --current value
+                local st = {0, 0, 0, 0}
+                --merge Yet
+                --0 1 2 3
+                local me = {false, false, false, false}
+                --move Position
+                -- 0 1 2 3
+                local mt = {-1, -1, -1, -1}
+                
+                --******
+                for i=0, 3, 1 do
+                    local num = row*4+i+1
+                    print("selfmap", num, self.map[num])
+                    --0 1 2 3 has number
+                    if self.map[num] ~= 0 then
+                        local find = false
+                        --judge need to merge 
+                        for j=i-1, 0, -1 do
+                            if st[j+1] == self.map[num] then
+                                st[j+1] = 2*self.map[num]
+                                me[j+1] = true
+                                mt[i+1] = j
+                                find = true
+                                break 
+                            --can't merge not empty then stop
+                            elseif st[j+1] ~= 0 then
+                                break
+                            end
+                        end
+
+                        print("merge or move?", find)
+                        --no merge then just move to first position
+                        --first zero position 
+                        --*****
+                        if not find then
+                            for j=0, 3, 1 do
+                                if st[j+1] == 0 then
+                                    mt[i+1] = j
+                                    st[j+1] = self.map[num]
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end
+
+                print("st me mt ")
+                print(simple.encode(st))
+                print(simple.encode(me))
+                print(simple.encode(mt))
+                for i=0, 3, 1 do
+                    --move label position
+                    --cur position block move to where
+                    --0 1 2 3
+                    --mt j position 0 1 2 3
+                    if mt[i+1] ~= -1 then
+                        print("move pos", i, mt[i+1])
+                        local num = row*4+i+1
+                        --***
+                        self.allLabel[num]:runAction(moveto(1, 80+160*mt[i+1], 132+596-58-160*row)) 
+                        --***
+                        local nn = row*4+mt[i+1]+1
+                        -- if merge then move and remove myself
+                        local col = mt[i+1]
+                        print("remove self", col, me[col+1])
+                        --merge 
+                        --not move at all
+                        
+                        --merge 0 1 2 3
+                        --***
+                        if me[col+1] then
+                            print("remove allLabel", self.allLabel[num])
+                            self.allLabel[num]:runAction(sequence({delaytime(1), fadeout(0.2), callfunc(nil, removeSelf, self.allLabel[num])}))
+                            --self.allLabel[num]:runAction(fadeout(0.5))
+                            self.allLabel[num] = nil
+                            self.map[num] = 0
+                            --merge value ---> j 3 2 1 0  move position
+                            print("merge block value", st[mt[i+1]+1])
+                            self.map[nn] = st[mt[i+1]+1]
+                            self.maxValue = math.max(self.maxValue, getOrder(st[mt[i+1]+1])-1)
+                        --no merge
+                        elseif nn == num then
+
+                        else
+                            self.allLabel[nn] = self.allLabel[num]
+                            self.allLabel[num] = nil
+                            --new value = old value
+                            self.map[nn] = self.map[num]
+                            self.map[num] = 0
+                        end
+                    end
+                end
+                print("after map")
+                print(simple.encode(self.map))
+
+                --if merge wait then show new block
+                --fadeout 
+                --0 1 2 3
+                for i=0, 3, 1 do
+                --***
+                    if me[i+1] then
+                        local num = row*4+i+1
+                        --self.allLabel[num] = ui.newBMFontLabel({})
+                        local l = ui.newBMFontLabel({font="bound.fnt", text=st[i+1], size=40})
+                        setAnchor(setPos(addChild(self.bg, l), {80+160*i, 132+596-58-160*row}), {0.5, 0.5})
+                        self.allLabel[num] = l
+                        l:setOpacity(0)
+                        l:runAction(sequence({delaytime(1), fadein(0.2)}))
+                    end
+                end
+            end
+
+            --[[
             local ct = {0, 0, 0, 0}
             for i=0, 3, 1 do
                 for j=0, 3, 1 do
@@ -228,10 +353,131 @@ function TestLayer:touchEnded(x, y)
                     end
                 end
             end
+            --]]
         end
     else
         -- up to low
+        --0 1 2 3
         if dy > 0 then
+
+            for col=0, 3, 1 do
+
+                --0 1 2 3
+                --current value
+                local st = {0, 0, 0, 0}
+                --merge Yet
+                --0 1 2 3
+                local me = {false, false, false, false}
+                --move Position
+                -- 0 1 2 3
+                local mt = {-1, -1, -1, -1}
+                
+                --******
+                for i=0, 3, 1 do
+                    local num = i*4+col+1
+                    print("selfmap", num, self.map[num])
+                    --0 1 2 3 has number
+                    if self.map[num] ~= 0 then
+                        local find = false
+                        --judge need to merge 
+                        for j=i-1, 0, -1 do
+                            if st[j+1] == self.map[num] then
+                                st[j+1] = 2*self.map[num]
+                                me[j+1] = true
+                                mt[i+1] = j
+                                find = true
+                                break 
+                            --can't merge not empty then stop
+                            elseif st[j+1] ~= 0 then
+                                break
+                            end
+                        end
+
+                        print("merge or move?", find)
+                        --no merge then just move to first position
+                        --first zero position 
+                        --*****
+                        if not find then
+                            for j=0, 3, 1 do
+                                if st[j+1] == 0 then
+                                    mt[i+1] = j
+                                    st[j+1] = self.map[num]
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end
+
+                --row ---> col
+                print("st me mt ")
+                print(simple.encode(st))
+                print(simple.encode(me))
+                print(simple.encode(mt))
+                for i=0, 3, 1 do
+                    --move label position
+                    --cur position block move to where
+                    --0 1 2 3
+                    --mt j position 0 1 2 3
+                    if mt[i+1] ~= -1 then
+                        print("move pos", i, mt[i+1])
+                        local num = i*4+col+1
+                        --***
+                        self.allLabel[num]:runAction(moveto(1, 80+160*col, 132+596-58-160*mt[i+1])) 
+                        --***
+                        local nn = mt[i+1]*4+col+1
+                        -- if merge then move and remove myself
+                        --local col = mt[i+1]
+                        --print("remove self", col, me[col+1])
+                        --merge 
+                        --not move at all
+                        
+                        --merge 0 1 2 3
+                        --***
+                        if me[mt[i+1]+1] then
+                            print("remove allLabel", self.allLabel[num])
+                            self.allLabel[num]:runAction(sequence({delaytime(1), fadeout(0.2), callfunc(nil, removeSelf, self.allLabel[num])}))
+                            --self.allLabel[num]:runAction(fadeout(0.5))
+                            self.allLabel[num] = nil
+                            self.map[num] = 0
+                            --merge value ---> j 3 2 1 0  move position
+                            print("merge block value", st[mt[i+1]+1])
+                            self.map[nn] = st[mt[i+1]+1]
+                            self.maxValue = math.max(self.maxValue, getOrder(st[mt[i+1]+1])-1)
+                        --no merge
+                        elseif nn == num then
+
+                        else
+                            self.allLabel[nn] = self.allLabel[num]
+                            self.allLabel[num] = nil
+                            --new value = old value
+                            self.map[nn] = self.map[num]
+                            self.map[num] = 0
+                        end
+                    end
+                end
+                print("after map")
+                print(simple.encode(self.map))
+
+                --if merge wait then show new block
+                --fadeout 
+                --0 1 2 3
+                for i=0, 3, 1 do
+                --***
+                    if me[i+1] then
+                        local num = i*4+col+1
+                        --self.allLabel[num] = ui.newBMFontLabel({})
+                        local l = ui.newBMFontLabel({font="bound.fnt", text=st[i+1], size=40})
+                        setAnchor(setPos(addChild(self.bg, l), {80+160*col, 132+596-58-160*i}), {0.5, 0.5})
+                        self.allLabel[num] = l
+                        l:setOpacity(0)
+                        l:runAction(sequence({delaytime(1), fadein(0.2)}))
+                    end
+                end
+            end
+
+
+            --[[
             local ct = {0, 0, 0, 0}
             print("dy > 0")
             --i col
@@ -254,7 +500,128 @@ function TestLayer:touchEnded(x, y)
                     end
                 end
             end
+            --]]
         else
+
+            for col=0, 3, 1 do
+
+                --0 1 2 3
+                --current value
+                local st = {0, 0, 0, 0}
+                --merge Yet
+                --0 1 2 3
+                local me = {false, false, false, false}
+                --move Position
+                -- 0 1 2 3
+                local mt = {-1, -1, -1, -1}
+                
+                --******
+                for i=3, 0, -1 do
+                    local num = i*4+col+1
+                    print("selfmap", num, self.map[num])
+                    --0 1 2 3 has number
+                    if self.map[num] ~= 0 then
+                        local find = false
+                        --judge need to merge 
+                        --**** 
+                        for j=i+1, 3, 1 do
+                            if st[j+1] == self.map[num] then
+                                st[j+1] = 2*self.map[num]
+                                me[j+1] = true
+                                mt[i+1] = j
+                                find = true
+                                break 
+                            --can't merge not empty then stop
+                            elseif st[j+1] ~= 0 then
+                                break
+                            end
+                        end
+                        print("merge or move?", find, mt[i+1])
+                        --no merge then just move to first position
+                        --first zero position 
+                        --*****
+                        if not find then
+                            for j=3, 0, -1 do
+                                if st[j+1] == 0 then
+                                    mt[i+1] = j
+                                    st[j+1] = self.map[num]
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end
+
+                --row ---> col
+                print("st me mt ")
+                print(simple.encode(st))
+                print(simple.encode(me))
+                print(simple.encode(mt))
+                for i=3, 0, -1 do
+                    --move label position
+                    --cur position block move to where
+                    --0 1 2 3
+                    --mt j position 0 1 2 3
+                    if mt[i+1] ~= -1 then
+                        local num = i*4+col+1
+                        print("move pos", i, mt[i+1], num)
+
+                        --***
+                        self.allLabel[num]:runAction(moveto(1, 80+160*col, 132+596-58-160*mt[i+1])) 
+                        --***
+                        local nn = mt[i+1]*4+col+1
+                        -- if merge then move and remove myself
+                        --local col = mt[i+1]
+                        --print("remove self", col, me[col+1])
+                        --merge 
+                        --not move at all
+                        
+                        --merge 0 1 2 3
+                        --***
+                        if me[mt[i+1]+1] then
+                            print("remove allLabel", num, self.allLabel[num])
+                            self.allLabel[num]:runAction(sequence({delaytime(1), fadeout(0.2), callfunc(nil, removeSelf, self.allLabel[num])}))
+                            --self.allLabel[num]:runAction(fadeout(0.5))
+                            self.allLabel[num] = nil
+                            self.map[num] = 0
+                            --merge value ---> j 3 2 1 0  move position
+                            print("merge block value", st[mt[i+1]+1])
+                            self.map[nn] = st[mt[i+1]+1]
+                            self.maxValue = math.max(self.maxValue, getOrder(st[mt[i+1]+1])-1)
+                        --no merge
+                        elseif nn == num then
+
+                        else
+                            self.allLabel[nn] = self.allLabel[num]
+                            self.allLabel[num] = nil
+                            --new value = old value
+                            self.map[nn] = self.map[num]
+                            self.map[num] = 0
+                        end
+                    end
+                end
+                print("after map")
+                print(simple.encode(self.map))
+
+                --if merge wait then show new block
+                --fadeout 
+                --0 1 2 3
+                for i=0, 3, 1 do
+                --***
+                    if me[i+1] then
+                        local num = i*4+col+1
+                        --self.allLabel[num] = ui.newBMFontLabel({})
+                        local l = ui.newBMFontLabel({font="bound.fnt", text=st[i+1], size=40})
+                        setAnchor(setPos(addChild(self.bg, l), {80+160*col, 132+596-58-160*i}), {0.5, 0.5})
+                        self.allLabel[num] = l
+                        l:setOpacity(0)
+                        l:runAction(sequence({delaytime(1), fadein(0.2)}))
+                    end
+                end
+            end
+
+
+            --[[
             local ct = {0, 0, 0, 0}
             --i col
             --j row
@@ -276,6 +643,7 @@ function TestLayer:touchEnded(x, y)
                     end
                 end
             end
+            --]]
 
         end
     end

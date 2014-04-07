@@ -1856,3 +1856,13 @@ function initPlist()
     sf:addSpriteFramesWithFile("catCut.plist")
     sf:addSpriteFramesWithFile("catHeadOne.plist")
 end
+
+function getOrder(v)
+    local ord = 0
+    while v > 1 do
+        v = math.floor(v/2)
+        ord = ord+1
+    end
+    return ord
+end
+
