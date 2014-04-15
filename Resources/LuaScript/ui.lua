@@ -193,6 +193,7 @@ end
 --image
 --conSize button size
 
+--{image=, conSize={}, delegate=self, callback=self.}
 function ui.newButton(params)
     local obj = {}
     local lay = CCLayer:create()

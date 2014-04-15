@@ -1161,6 +1161,14 @@ function str(v)
     end
     return ""..v
 end
+
+function appear(obj) 
+    local function cb()
+        obj:setVisible(true)
+    end
+    return callfunc(nil, cb, nil)
+end
+
 function disappear(obj)
     local function cb()
         obj:setVisible(false)
