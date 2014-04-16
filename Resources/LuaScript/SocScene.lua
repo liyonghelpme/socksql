@@ -1,5 +1,6 @@
 local SocketTCP = require "SocketTCP"
 require "lsqlite3"
+local socket = require "socket"
 
 SocScene = class()
 function SocScene:ctor()
@@ -38,7 +39,9 @@ function SocScene:ctor()
 end
 function SocScene:onBut()
     if self.state == 0 then
-        self.socket = SocketTCP.new("localhost", 8000, false)
+        local host = socket.dns.toip('www.baidu.com')
+
+        self.socket = SocketTCP.new(host, 80, false)
         Event:registerEvent(SocketTCP.EVENT_CONNECTED, self)
         Event:registerEvent(SocketTCP.EVENT_CLOSE, self)
         Event:registerEvent(SocketTCP.EVENT_CLOSED, self)
