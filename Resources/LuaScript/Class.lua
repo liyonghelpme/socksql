@@ -28,7 +28,11 @@ function class(super)
  
 	setmetatable(class_type,{__newindex=
 		function(t,k,v)
-			vtbl[k]=v
+            if type(v) == 'function' then
+			    vtbl[k]=v
+            else
+                rawset(t, k, v)
+            end
 		end
 	})
  

@@ -62,6 +62,26 @@ function registerUpdate(obj, interval)
     end
     obj.updateFunc = CCDirector:sharedDirector():getScheduler():scheduleScriptFunc(update, interval, false)
 end
+
+
+local sch
+function Scheduler()
+    if sch == nil then
+        sch = {}
+        function sch.scheduleGlobal(listener, interval)
+            --print("scheduler function", listener, interval)
+            return CCDirector:sharedDirector():getScheduler():scheduleScriptFunc(listener, interval, false)
+        end
+        function sch.unscheduleGlobal(handler)
+            --print("unscheduleGlobal ", handler)
+            CCDirector:sharedDirector():getScheduler():unscheduleScriptEntry(handler)
+        end
+
+    end
+    return sch
+end
+
+
 function registerEnterOrExit(obj)
     local function onEnterOrExit(tag)
         if tag == 'enter' then
