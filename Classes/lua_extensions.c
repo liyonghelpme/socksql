@@ -10,7 +10,10 @@ extern "C" {
 
 #include "lpack/lpack.h"
 
+#include "lsqlite3/lsqlite3.h"
+
 static luaL_Reg luax_exts[] = {
+    {"lsqlite3", luaopen_lsqlite3},
     {"pack", luaopen_pack},
     {"socket.core", luaopen_socket_core},
     {"mime.core", luaopen_mime_core},
