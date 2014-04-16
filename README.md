@@ -1,14 +1,26 @@
-#å‚è€ƒquick cocos2dx é¡¹ç›®ä»£ç 
+##²Î¿¼quick cocos2dx ÊµÏÖ
 
 
-#Class lua åŠŸèƒ½æ‰©å±• c ä»£ç 
+##Class lua Ïà¹ØÊµÏÖc ´úÂë
 socket
 lpack
 lsqlite 
 
 
-#Resources LuaScript luaè„šæœ¬
-####SocScene.lua æµ‹è¯•ä»¥ä¸ŠåŠŸèƒ½ çš„ä¸€ä¸ªæ ·ä¾‹ åœºæ™¯
+##Resources LuaScript lua Ïà¹ØÊµÏÖµÄlua ´úÂë
+####SocScene.lua ²âÊÔ¹¦ÄÜµÄ½Å±¾
 
 
-#proj.linux ä¸­çš„Maker file ä¸ºlinuxå¹³å°ç¼–è¯‘
+##proj.win32 windows ÏÂ¹¤³Ì¿ÉÒÔ±àÒë³É¹¦
+##proj.linux linuxÏÂ µÄmakefile ¿ÉÒÔ±àÒë³É¹¦
+
+##project position sample lua socksql
+
+##Ê¹ÓÃ·½·¨
+Ö±½Ó½«¸Ã¹¤³Ì Ìí¼Óµ½ cocos2d-xµÄ solution ÀïÃæ 
+ÉèÖÃ¸Ã¹¤³ÌÎª start ¹¤³Ì ¾Í¿ÉÒÔÔËĞĞÁË
+
+
+##Ö÷Òª½Ó¿Ú²âÊÔ
+
+
