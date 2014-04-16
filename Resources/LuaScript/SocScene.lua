@@ -27,14 +27,16 @@ function SocScene:ctor()
     end
 
     
-    local db = sqlite3.open("game.db")
+    --local db = sqlite3.open("game.db")
     db:exec[[
     create table go(id integer primary key, content );
     insert into go values(NULL, "what");
     ]]
+    --[[
     for row in db:nrows("select * from go") do
         print(row.id, row.content)
     end
+    --]]
 
 end
 function SocScene:onBut()
@@ -66,7 +68,7 @@ function SocScene:receiveMsg(name, msg)
     print(name, msg)
     if name == SocketTCP.EVENT_CONNECTED then
     elseif name == SocketTCP.EVENT_DATA then
-        print(msg.data)
+        print(#msg.data)
     end
 end
 
