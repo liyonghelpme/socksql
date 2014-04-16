@@ -7,6 +7,12 @@
     <Filter Include="win32">
       <UniqueIdentifier>{917fb40f-fc6d-4ee9-9a20-26debabe41aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="socket">
+      <UniqueIdentifier>{9826a5b2-671d-4c12-9d8a-dfb1fd341057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lpack">
+      <UniqueIdentifier>{78c16f3f-a4ac-479e-a857-7856e3a8f4a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -14,6 +20,63 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\lua_extensions.c">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\lsqlite3\lsqlite3.c">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\lsqlite3\sqlite3.c">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\cocos2d_ext_tolua.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\platform\ComNative.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\auxiliar.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\except.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\inet.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\mime.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\luasocket_io.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\luasocket_buffer.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\luasocket.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\options.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\select.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\tcp.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\timeout.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\udp.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\socket\wsocket.c">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\lpack\lpack.c">
+      <Filter>lpack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
