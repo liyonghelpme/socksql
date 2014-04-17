@@ -27,14 +27,19 @@ function SocScene:ctor()
     end
 
     
-    local db = sqlite3.open("game.db")
+    --local db = sqlite3.open("game.db")
     db:exec[[
     create table go(id integer primary key, content );
     insert into go values(NULL, "what");
     ]]
+    --[[
     for row in db:nrows("select * from go") do
         print(row.id, row.content)
     end
+    --]]
+
+    local pc = string.pack('<bihP2', 0x59, 11, 1101, "", "中文")
+    print("lpack data", string.len(pc))
 
 end
 function SocScene:onBut()
@@ -60,6 +65,8 @@ function SocScene:onBut()
         local d= 'GET / HTTP/1.0\r\n\r\n'
         print("sendData", d)
         self.socket:send(d)
+
+        local d2 = 'GET / HTTP/1.0\r\n'
     end
 end
 function SocScene:receiveMsg(name, msg)
