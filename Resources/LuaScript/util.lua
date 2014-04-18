@@ -105,6 +105,32 @@ function registerEnterOrExit(obj)
     obj.bg:registerScriptHandler(onEnterOrExit)
 end
 
+function regNodeEnterOrExit(obj, func)
+    local function onEnterOrExit(tag)
+        if tag == 'enter' then
+            if func.enterScene ~= nil then
+                func:enterScene()
+            end
+            if func.needUpdate then
+                registerUpdate(func)
+            end
+            regEvent(func)
+        elseif tag == 'exit' then
+            if func.updateFunc ~= nil then
+                CCDirector:sharedDirector():getScheduler():unscheduleScriptEntry(func.updateFunc)
+            end
+            clearEvent(func)
+            if func.exitScene ~= nil then
+                func:exitScene()
+            end
+        end
+    end
+    obj:registerScriptHandler(onEnterOrExit)
+end
+
+
+
+
 function round(x)
     local t
     if x >= 0.0 then
@@ -1722,9 +1748,17 @@ function calAttr(id, level, equip)
 end
 
 
-function centerTemp(sp)
+function centerTemp(sp, sds)
+
     local vs = getVS()
     local ds = global.director.designSize
+    if sds ~= nil then
+        if type(sds) == 'userdata' then
+            sds = {sds.width, sds.height}
+        end
+        ds = sds
+    end
+
     local sca = math.min(vs.width/ds[1], vs.height/ds[2])
     local cx, cy = ds[1]/2, ds[2]/2
     local nx, ny = vs.width/2-cx*sca, vs.height/2-cy*sca
@@ -1885,6 +1919,10 @@ function initPlist()
     sf:addSpriteFramesWithFile("catHeadOne.plist")
 end
 
+function addPlist(f)
+    CCSpriteFrameCache:sharedSpriteFrameCache():addSpriteFramesWithFile(f)
+end
+
 function getOrder(v)
     local ord = 0
     while v > 1 do
@@ -1893,4 +1931,5 @@ function getOrder(v)
     end
     return ord
 end
+
 

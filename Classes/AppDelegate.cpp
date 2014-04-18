@@ -64,6 +64,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	CCFileUtils::sharedFileUtils()->addSearchPath(s);
     CCFileUtils::sharedFileUtils()->addSearchPath("LuaScript");
     CCFileUtils::sharedFileUtils()->addSearchPath("lualib");
+    CCFileUtils::sharedFileUtils()->addSearchPath("res2");
 
     
 	//UpdateScene 中更新脚本

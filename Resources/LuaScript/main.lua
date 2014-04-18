@@ -37,7 +37,9 @@ local function main()
     --require 'myMap.FightMap'
     --require "Miao.TestSea"
     --require "TestScene"
-    require "SocScene"
+    --require "SocScene"
+    require "cocostudioUtil"
+    require "GameScene"
 
     for k, v in pairs(package.preload) do
         print(k, v)
@@ -50,7 +52,7 @@ local function main()
     director:replaceScene(sc.bg)
     global.director:onlyRun(sc)
     --]]
-    local sc = SocScene.new()
+    local sc = GameScene.new()
     --director:runWithScene(sc.bg)
     --global.director:onlyRun(sc)
     global.director:runWithScene(sc)
