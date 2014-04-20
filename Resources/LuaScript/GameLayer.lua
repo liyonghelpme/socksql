@@ -1,3 +1,4 @@
+require "PlayerLayer"
 GameLayer = class()
 function GameLayer:ctor()
     self.bg = CCLayer:create()
@@ -53,10 +54,73 @@ function GameLayer:ctor()
 
     local cen = getChildByNameRec(addshow, "center")
     centerWidget(cen, sz) 
+    local di = getChildByNameRec(addshow, "direct")
+    local t = {
+        delegate=self,
+        te=self.onDirect
+    }
+    addTouchEventListener(di, t)
+
+    local login = getChildByNameRec(addshow, "login")
+    local t = {
+        delegate = self,
+        te = self.onLogin
+    }
+    addTouchEventListener(login, t)
+
+
+    local bottom = getChildByNameRec(addshow, "bottom")
+    bottomWidget(bottom, sz)
+
+    local loadBar = getChildByNameRec(addshow, "LoadingBar")
+    loadBar:setVisible(false)
+    self.loadBar = tolua.cast(loadBar, "LoadingBar")
+
+    local regDialog = getChildByNameRec(addshow, "regDialog")
+    regDialog:setEnabled(false)
+    self.regDialog = regDialog
+    centerWidget(self.regDialog, sz)
+    
+    local acc = getChildByNameRec(addshow, "account")
+    local t = {
+        delegate = self,
+        te = self.onAcc
+    }
+    acc = tolua.cast(acc, "TextField")
+    addEventListenerTextField(acc, t)
+
 end
 
+function GameLayer:onAcc()
+    print("onAccount")
+end
+
+function GameLayer:onLogin()
+    self.regDialog:Enabled(true)
+end
+
+function GameLayer:onDirect()
+    self.loadBar:setVisible(true)
+    self.loadBar:setPercent(0)
+    self.showL = true
+    self.pe = 0
+    self.passTime = 0
+end
 
 function GameLayer:update(diff)
     --print("lb sx", getScaleX(self.lb))
     --print("lb sy", getScaleY(self.lb))
+    if self.showL then
+        self.passTime = self.passTime+diff
+        if self.passTime > 0.1 then
+            self.passTime = self.passTime-0.1
+            self.pe = self.pe+1
+            self.pe = math.min(self.pe, 100)
+            self.loadBar:setPercent(self.pe)
+        end
+        if self.pe == 100 then
+            global.director:replaceScene(PlayerScene.new()) 
+        end
+    end
 end
+
