@@ -81,7 +81,7 @@ function ui.newBMFontLabel(params)
     local x, y      = params.x, params.y
     local size      = params.size or 20
     assert(font ~= nil, "ui.newBMFontLabel() - not set font")
-    local baseSize = 35
+    local baseSize = 50
     local k = size/baseSize
     local label = CCLabelBMFont:create(text, font, kCCLabelAutomaticWidth, textAlign)
     label:setScale(k)

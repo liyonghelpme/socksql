@@ -1336,6 +1336,11 @@ function createAnimation(name, format, a,b,c,t, isFrame)
     end
     return animation
 end
+function Animate(name)
+    local ani = getAnimation(name)
+    return CCAnimate:create(ani)
+end
+
 function getVS()
     return CCDirector:sharedDirector():getVisibleSize()
 end
@@ -1415,8 +1420,11 @@ function addCLayer(b)
     b:addChild(l)
     return l
 end
-function addChild(p, c)
-    p:addChild(c)
+function addChild(p, c, z)
+    if z == nil then
+        z = 0
+    end
+    p:addChild(c, z)
     return c
 end
 

@@ -39,8 +39,9 @@ local function main()
     --require "TestScene"
     --require "SocScene"
     require "cocostudioUtil"
-    require "GameScene"
-    require "PlayerLayer"
+    --require "GameScene"
+    --require "PlayerLayer"
+    require "JumpScene"
 
     for k, v in pairs(package.preload) do
         print(k, v)
@@ -53,7 +54,7 @@ local function main()
     director:replaceScene(sc.bg)
     global.director:onlyRun(sc)
     --]]
-    local sc = PlayerScene.new()
+    local sc = JumpScene.new()
     --director:runWithScene(sc.bg)
     --global.director:onlyRun(sc)
     global.director:runWithScene(sc)

@@ -66,6 +66,32 @@ function upRightWidget(sp, sds)
     setPos(sp, {nx, ny})
 end
 
+function centerFullWidthWidget(sp, sds)
+    local ds = global.director.designSize
+    if sds ~= nil then
+        if type(sds) == 'userdata' then
+            sds = {sds.width, sds.height}
+        end
+        ds = sds
+    end
+
+    local vs = getVS()
+    if sds ~= nil then
+        if type(sds) == 'userdata' then
+            sds = {sds.width, sds.height}
+        end
+        ds = sds
+    end
+
+    local sca = vs.width/ds[1]
+    local cx, cy = ds[1]/2, ds[2]/2
+    local nx, ny = vs.width/2-cx*sca, vs.height/2-cy*sca
+    print("centerTemp", sca, nx, ny, vs.width, vs.height, ds[1], ds[2])
+
+    setScale(sp, sca)
+    setPos(sp, {nx, ny})
+end
+
 --full width screen at top
 function upFullWidthWidget(sp, sds)
     local ds = global.director.designSize
@@ -128,6 +154,7 @@ function centerWidget(sp, sds)
     --local wig = tolua.cast(sp, "Widget")
     setPos(sp, {nx, ny})
 end
+
 
 function bottomWidget(sp, sds)
     local vs = getVS()

@@ -6,7 +6,7 @@ end
 Director = class()
 function Director:ctor()
     self.stack = {}
-    self.designSize = {640, 960}
+    self.designSize = {1024, 640}
     local vs = CCDirector:sharedDirector():getVisibleSize()
     self.disSize = {vs.width, vs.height}
     self.sceneStack = {}
@@ -47,7 +47,7 @@ function Director:pushView(view, dark, autoPop, showDark)
         print('push View', #self.stack)
     end
     --Logic.paused = true
-    setLogicPause(true)
+    --setLogicPause(true)
     Event:sendMsg(EVENT_TYPE.SHOW_DIALOG)
 end
 
@@ -59,7 +59,7 @@ function Director:popView()
     --Logic.paused = false
     
     if #self.stack == 0 then
-        setLogicPause(false)
+        --setLogicPause(false)
         Event:sendMsg(EVENT_TYPE.CLOSE_DIALOG)
     else
         local ov = self.stack[#self.stack]
