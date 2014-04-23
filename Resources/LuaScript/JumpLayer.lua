@@ -52,7 +52,7 @@ function JumpLayer:ctor()
 
     self.sca = sca
 
-    self.speed = 300*sca
+    self.speed = 400*sca
     self.state = 0
 
     local sui = ScoreUI.new(self)
@@ -134,7 +134,7 @@ function JumpLayer:generateBlock(diff)
     if #self.blocks < 5 then
         local rd = math.random(0, 1)
         local block = createSprite("block"..rd..".png")
-        local gap = 50
+        local gap = math.random(150, 250)
         if self.state == 0 then
             gap = -50
         end

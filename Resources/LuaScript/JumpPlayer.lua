@@ -27,6 +27,7 @@ function JumpPlayer:resetGame()
     self.hasPole = false
     self.dead = false
     self.inSpace = false
+    self.inRestore = false
     self.changeDirNode:stopAction(self.ani)
     self.ani = repeatForever(Animate("run"))
     self.changeDirNode:runAction(self.ani)
@@ -40,6 +41,10 @@ function JumpPlayer:touchBegan(x, y)
     if self.dead then
         return
     end
+    if not self.inRestore then
+        return
+    end
+
     if not self.inSpace then
         self.inSpace = true
         local function finishRun()
@@ -80,6 +85,7 @@ function JumpPlayer:update(diff)
                 self.ani = repeatForever(Animate("pickRun"))
                 self.changeDirNode:runAction(self.ani)
                 setAnchor(self.changeDirNode, {28/308, 0})
+                self.inRestore = true
             end
             local function setTex()
                 setTexOrDis(self.changeDirNode, "pick.png")
