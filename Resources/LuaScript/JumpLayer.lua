@@ -22,9 +22,12 @@ function JumpLayer:ctor()
     self.bg1 = bg1
     local bg2 = createSprite("bg2.png")
     self.bg2 = bg2
+    local bg3 = createSprite("bg1.png")
+    self.bg3 = bg3
 
     setScale(setAnchor(setPos(addChild(self.bgLayer, bg1), {0, 0}), {0, 0}), 1.01)
     setScale(setAnchor(setPos(addChild(self.bgLayer, bg2), {1024, 0}), {0, 0}), 1.01)
+    setScale(setAnchor(setPos(addChild(self.bgLayer, bg3), {2048, 0}), {0, 0}), 1.01)
     
     setScale(self.bgLayer, sca)
 
@@ -73,6 +76,8 @@ function JumpLayer:resetGame()
     setPos(self.bgLayer, {0, 0})
     setPos(self.bg1, {0, 0})
     setPos(self.bg2, {1024, 0})
+    setPos(self.bg3, {2048, 0})
+
 
     for k, v in ipairs(self.blocks) do
         removeSelf(v[1]) 
@@ -109,11 +114,12 @@ function JumpLayer:adjustScene(diff)
 
     --bgLayer
     setPos(self.bgLayer, {p[1]*0.5, 0})
+    local bps = p[1]*0.5
     local bg1 = getPos(self.bg1)
-    if p[1]*0.5+(bg1[1]+1024)*self.sca < 0 then
-        local bg2 = getPos(self.bg2)
-        setPos(self.bg1, {bg2[1]+1024, 0})
-        self.bg1, self.bg2 = self.bg2, self.bg1
+    if bps+(bg1[1]+1024)*self.sca < 0 then
+        local bg3 = getPos(self.bg3)
+        setPos(self.bg1, {bg3[1]+1024, 0})
+        self.bg1, self.bg2, self.bg3 = self.bg2, self.bg3, self.bg1 
     end
 
 end

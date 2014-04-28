@@ -1941,3 +1941,11 @@ function getOrder(v)
 end
 
 
+
+function waitTime(diff, maxTime)
+    local passTime = 0
+    while passTime < maxTime do
+        passTime = passTime+diff
+        coroutine.yield(passTime)
+    end
+end

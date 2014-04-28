@@ -6,7 +6,7 @@ end
 Director = class()
 function Director:ctor()
     self.stack = {}
-    self.designSize = {1024, 640}
+    self.designSize = {640, 960}
     local vs = CCDirector:sharedDirector():getVisibleSize()
     self.disSize = {vs.width, vs.height}
     self.sceneStack = {}

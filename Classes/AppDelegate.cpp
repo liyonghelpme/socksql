@@ -65,7 +65,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     CCFileUtils::sharedFileUtils()->addSearchPath("LuaScript");
     CCFileUtils::sharedFileUtils()->addSearchPath("lualib");
     //CCFileUtils::sharedFileUtils()->addSearchPath("res2");
-    CCFileUtils::sharedFileUtils()->addSearchPath("jumpImg");
+    CCFileUtils::sharedFileUtils()->addSearchPath("image");
 
     
 	//UpdateScene 中更新脚本

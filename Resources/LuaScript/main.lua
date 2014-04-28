@@ -38,10 +38,11 @@ local function main()
     --require "Miao.TestSea"
     --require "TestScene"
     --require "SocScene"
-    require "cocostudioUtil"
+    --require "cocostudioUtil"
     --require "GameScene"
     --require "PlayerLayer"
-    require "JumpScene"
+    --require "JumpScene"
+    require "ThreeScene"
 
     for k, v in pairs(package.preload) do
         print(k, v)
@@ -54,7 +55,7 @@ local function main()
     director:replaceScene(sc.bg)
     global.director:onlyRun(sc)
     --]]
-    local sc = JumpScene.new()
+    local sc = ThreeScene.new()
     --director:runWithScene(sc.bg)
     --global.director:onlyRun(sc)
     global.director:runWithScene(sc)
